@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## Unreleased (weirdbricks fork)
+
+Features:
+- `--fail-fast`: stop after the first failed test; the summary still prints and
+  `after_all` still runs for a suite the stop cut short.
+- `--line LINE` and `--location FILE:LINE`: run only the `it` declared there,
+  matched against the declaration's whole `it .. end` range.
+- Tags: `it "...", tags: :slow` (or an Array of Symbols/Strings) and `--tag TAG`,
+  repeatable, with `~tag` excluding a tag.
+- `before_all` / `after_all`: run once per describe, with its first/last test.
+- `--name` also matches the describe's title and `Class#test_name`.
+- `Runnable::Data` carries each test's declaration location.
+
 ## v1.6.2
 
 Fixes:

@@ -8,9 +8,18 @@ module Minitest
       {{definition}}
     end
 
-    macro it(name = "anonymous", focus = false, &block)
-      {% if focus %}focus{% end %} def test_{{ name.strip.gsub(/[^\p{L}\p{N}]+/, "_").id }}
+    macro it(name = "anonymous", tags = nil, file = __FILE__, line = __LINE__, end_line = __END_LINE__, focus = false, &block)
+      {% method = "test_" + name.strip.gsub(/[^\p{L}\p{N}]+/, "_") %}
+      {% if focus %}focus{% end %} def {{ method.id }}
         ret = {{ yield }}
+      end
+
+      def self.__minitest_src_{{ method.id }} : Minitest::Runnable::Location
+        { {{ file }}, {{ line }}, {{ end_line }} }
+      end
+
+      def self.__minitest_tags_{{ method.id }} : Set(String)
+        Minitest.normalize_tags({{ tags }})
       end
     end
   end

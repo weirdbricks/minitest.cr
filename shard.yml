@@ -1,5 +1,5 @@
 name: minitest
-version: 1.6.2
+version: 1.6.2+weirdbricks.1
 description: The Minitest testing facilities (Unit, Spec, Assertions, Expectations)
 
 authors:

@@ -87,11 +87,60 @@ Eventually run the tests:
 $ crystal run test/meme_test.cr spec/meme_spec.cr -- --verbose
 ```
 
-You may filter your tests using an exact test name, or a regexp:
+You may filter your tests using an exact test name, or a regexp. The
+describe's title and `Class#test_name` match too, so a title with punctuation
+in it does not have to be turned into a method name by hand:
 
 ```
 $ crystal run test/meme_test.cr -- -n test_that_kitty_can_eat
 $ crystal run test/meme_test.cr -- -n /will/
+$ crystal run test/meme_test.cr -- -n "/when asked about blending/"
+```
+
+Run the single test declared at a line, the way a failing stack trace points at
+it (spec-style `it` declarations only; a plain `def test_*` has no declaration):
+
+```
+$ crystal run spec/meme_spec.cr -- --line 17
+$ crystal run spec/meme_spec.cr -- --location spec/meme_spec.cr:17
+```
+
+Stop at the first failure instead of running the rest:
+
+```
+$ crystal run spec/meme_spec.cr -- --fail-fast
+```
+
+Tag tests and select them at run time. `--tag` is repeatable; a tag prefixed
+with `~` is excluded, any other is required:
+
+```crystal
+describe Meme do
+  it "starts a server", tags: :slow do
+  end
+
+  it "starts a server too", tags: [:slow, :infra] do
+  end
+end
+```
+
+```
+$ crystal run spec/meme_spec.cr -- --tag slow
+$ crystal run spec/meme_spec.cr -- --tag slow --tag ~infra
+```
+
+`before_all` and `after_all` run once per describe, with its first and last
+test, instead of before and after every test like `before`/`after`. They run on
+that test's instance, so state shared with the tests has to be class level:
+
+```crystal
+describe Meme do
+  before_all { @@server = start_server }
+  after_all { @@server.stop }
+
+  it "talks to the server" do
+  end
+end
 ```
 
 When using Minitest::Spec with assertions or the `expect` syntax, you can avoid to taint Object with all the `#must_` and `#wont_` expectations:
