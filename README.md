@@ -105,6 +105,10 @@ $ crystal run spec/meme_spec.cr -- --line 17
 $ crystal run spec/meme_spec.cr -- --location spec/meme_spec.cr:17
 ```
 
+`crystal spec` parses `--location` itself, so under `crystal spec file -- ...`
+only `--line` reaches minitest; `--location` works when a built test binary is
+run directly.
+
 Stop at the first failure instead of running the rest:
 
 ```
