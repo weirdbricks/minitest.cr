@@ -360,7 +360,7 @@ module Minitest
     end
 
     leftovers.each do |suite|
-      suite.new(reporter).after_all
+      suite.new(reporter).__minitest_after_all
     rescue ex
       STDERR.puts "after_all for #{suite.name} failed: #{ex.message}"
     end

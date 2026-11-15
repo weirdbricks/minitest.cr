@@ -23,12 +23,12 @@ module Minitest
     # Runs once, with the first test this run executes for the class. Its failures
     # are recorded on that test. Tests sharing state set up here must use class
     # level state (constants or class variables): every test is a new instance.
-    def before_all
+    def __minitest_before_all
     end
 
     # Runs once, with the last test this run executes for the class. A fail-fast
     # stop also runs it for a suite it cut short, on a fresh instance.
-    def after_all
+    def __minitest_after_all
     end
   end
 
@@ -41,7 +41,7 @@ module Minitest
 
       result = Result.new(self.class.name, name)
 
-      capture_exception(result) { before_all } if Minitest.hook_first?(self.class)
+      capture_exception(result) { __minitest_before_all } if Minitest.hook_first?(self.class)
 
       result.time = Time.measure do
         capture_exception(result) do
@@ -56,7 +56,7 @@ module Minitest
         capture_exception(result) { after_teardown }
       end
 
-      capture_exception(result) { after_all } if Minitest.hook_last?(self.class)
+      capture_exception(result) { __minitest_after_all } if Minitest.hook_last?(self.class)
 
       __reporter.record(result)
 

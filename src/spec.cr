@@ -37,14 +37,14 @@ module Minitest
     # Runs once for the whole describe, with its first test (not before every test
     # like before/setup). State shared with the tests must be class level.
     macro before_all(&block)
-      def before_all
+      def __minitest_before_all
         {{ yield }}
       end
     end
 
     # Runs once for the whole describe, with its last test.
     macro after_all(&block)
-      def after_all
+      def __minitest_after_all
         {{ yield }}
       end
     end
