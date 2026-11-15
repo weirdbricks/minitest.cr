@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased (weirdbricks fork)
+## v1.7.0 (weirdbricks fork)
 
 Features:
 - `--fail-fast`: stop after the first failed test; the summary still prints and
